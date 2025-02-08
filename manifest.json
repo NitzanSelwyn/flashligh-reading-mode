@@ -1,0 +1,26 @@
+{
+    "manifest_version": 3,
+    "name": "Flashlight Reading Mode",
+    "version": "1.0",
+    "description": "Did you ever want the feeling of reading a book with a light source? now you can",
+    "permissions": [
+        "activeTab"
+    ],
+    "action": {
+        "default_popup": "popup.html",
+        "default_title": "Toggle on/off"
+    },
+    "content_scripts": [
+        {
+            "matches": [
+                "<all_urls>"
+            ],
+            "css": [
+                "styles.css"
+            ],
+            "js": [
+                "content.js"
+            ]
+        }
+    ]
+}
