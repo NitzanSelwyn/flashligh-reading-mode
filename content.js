@@ -24,8 +24,13 @@ const flashlightCursor = (`data:image/svg+xml;utf8,
 
 const candleCursor = (`data:image/svg+xml;utf8,
 <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
-  <circle cx="16" cy="16" r="8" fill="orange"/>
-  <path d="M16 8c2 4 0 8 0 8s-2-4 0-8z" fill="red"/>
+  <rect x="14" y="16" width="4" height="12" fill="%23F4F4F4" rx="1"/>
+  <line x1="16" y1="8" x2="16" y2="16" stroke="%23333333" stroke-width="1"/>
+  <path d="M16,8 Q18,10 16,14 Q14,10 16,8" fill="%23FF6B00"/>
+  <path d="M16,7 Q19,10 16,15 Q13,10 16,7" fill="%23FFB800" opacity="0.7"/>
+  <path d="M16,6 Q20,10 16,16 Q12,10 16,6" fill="%23FFE2B7" opacity="0.5"/>
+  <rect x="14" y="16" width="1" height="12" fill="%23E0E0E0"/>
+  <rect x="17" y="16" width="1" height="12" fill="%23D0D0D0"/>
 </svg>`).replace(/\n\s*/g, '');
 
 function createOverlay() {
@@ -40,10 +45,19 @@ function updateOverlay(e) {
     const y = e.clientY;
     if (currentMode === "flashlight") {
         const radius = 200;
-        overlay.style.background = `radial-gradient(circle ${radius}px at ${x}px ${y}px, transparent 0%, transparent 100%, black 100%)`;
+        overlay.style.background = `radial-gradient(circle ${radius}px at ${x}px ${y}px, 
+            rgba(0,0,0,0) 20%, 
+            rgba(0,0,0,0.2) 40%, 
+            rgba(0,0,0,0.6) 70%, 
+            rgba(0,0,0,0.95) 100%)`;
     } else if (currentMode === "candle") {
         const radius = 150;
-        overlay.style.background = `radial-gradient(circle ${radius}px at ${x}px ${y}px, rgba(255, 255, 200, 1) 0%, rgba(255, 200, 0, 0.5) 70%, black 100%)`;
+        overlay.style.background = `radial-gradient(circle ${radius}px at ${x}px ${y}px, 
+            rgba(255, 240, 150, 1) 0%, 
+            rgba(255, 220, 130, 0.9) 20%, 
+            rgba(255, 200, 100, 0.7) 40%,
+            rgba(255, 170, 70, 0.4) 60%,
+            rgba(0, 0, 0, 0.95) 100%)`;
     }
 }
 
