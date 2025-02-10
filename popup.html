@@ -4,16 +4,18 @@
 <head>
     <style>
         body {
-            width: 200px;
-            padding: 16px;
-            font-family: Arial, sans-serif;
+            width: 240px;
+            padding: 20px;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background-color: #f8f9fa;
+            margin: 0;
         }
 
         .switch {
             position: relative;
             display: inline-block;
-            width: 60px;
-            height: 34px;
+            width: 50px;
+            height: 28px;
         }
 
         .switch input {
@@ -29,39 +31,91 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background-color: #ccc;
-            transition: 0.4s;
+            background-color: #e2e2e2;
+            transition: 0.3s;
             border-radius: 34px;
+            box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
         }
 
         .slider:before {
             position: absolute;
             content: "";
-            height: 26px;
-            width: 26px;
+            height: 20px;
+            width: 20px;
             left: 4px;
             bottom: 4px;
             background-color: white;
-            transition: 0.4s;
+            transition: 0.3s;
             border-radius: 50%;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.15);
         }
 
-        input:checked+.slider {
-            background-color: #2196f3;
+        input:checked + .slider {
+            background-color: #4CAF50;
         }
 
-        input:checked+.slider:before {
-            transform: translateX(26px);
+        input:checked + .slider:before {
+            transform: translateX(22px);
         }
 
         .container {
             display: flex;
             align-items: center;
-            gap: 12px;
+            justify-content: space-between;
+            padding: 10px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
         }
 
         .label {
-            font-size: 16px;
+            font-size: 15px;
+            font-weight: 500;
+            color: #2c3e50;
+        }
+
+        .modes-container {
+            margin-top: 20px;
+            background-color: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .modes-title {
+            font-size: 15px;
+            font-weight: 500;
+            color: #2c3e50;
+            margin-bottom: 12px;
+        }
+
+        .mode-options {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .mode-option {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 6px;
+            transition: background-color 0.2s;
+        }
+
+        .mode-option:hover {
+            background-color: #f8f9fa;
+        }
+
+        .mode-option input[type="radio"] {
+            margin-right: 10px;
+            accent-color: #4CAF50;
+        }
+
+        .mode-option span {
+            font-size: 14px;
+            color: #4a4a4a;
         }
     </style>
 </head>
@@ -74,16 +128,25 @@
             <span class="slider"></span>
         </label>
     </div>
-    <!-- New radio button options for mode selection -->
-    <div style="margin-top: 16px;">
-        <span style="font-size: 16px;">Select Mode:</span><br>
-        <label>
-            <input type="radio" name="mode" value="flashlight" checked> Flashlight
-        </label>
-        <label style="margin-left: 10px;">
-            <input type="radio" name="mode" value="candle"> Candle
-        </label>
+
+    <div class="modes-container">
+        <div class="modes-title">Select Mode</div>
+        <div class="mode-options">
+            <label class="mode-option">
+                <input type="radio" name="mode" value="flashlight" checked>
+                <span>Flashlight</span>
+            </label>
+            <label class="mode-option">
+                <input type="radio" name="mode" value="candle">
+                <span>Candle</span>
+            </label>
+            <label class="mode-option">
+                <input type="radio" name="mode" value="lighthouse">
+                <span>Lighthouse</span>
+            </label>
+        </div>
     </div>
+
     <script src="popup.js"></script>
 </body>
 

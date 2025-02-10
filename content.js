@@ -55,6 +55,20 @@ const candleCursor = (`data:image/svg+xml;utf8,
   <rect x="17" y="16" width="1" height="12" fill="%23D0D0D0"/>
 </svg>`).replace(/\n\s*/g, '');
 
+// Add lighthouse cursor after the candle cursor definition
+const lighthouseCursor = (`data:image/svg+xml;utf8,
+<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
+  <defs>
+    <linearGradient id="lighthouse-base" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:%23cc0000"/>
+      <stop offset="100%" style="stop-color:%23ff0000"/>
+    </linearGradient>
+  </defs>
+  <rect x="14" y="16" width="4" height="12" fill="url(%23lighthouse-base)" rx="1"/>
+  <circle cx="16" cy="12" r="6" fill="%23ffffff" stroke="%23cc0000" stroke-width="2"/>
+  <circle cx="16" cy="12" r="3" fill="%23ff0000"/>
+</svg>`).replace(/\n\s*/g, '');
+
 function createOverlay() {
     overlay = document.createElement("div");
     overlay.className = "flashlight-overlay";
@@ -65,6 +79,7 @@ function updateOverlay(e) {
     if (!overlay || !isActive) return;
     const x = e.clientX;
     const y = e.clientY;
+    
     if (currentMode === "flashlight") {
         const radius = 200;
         overlay.style.background = `radial-gradient(circle ${radius}px at ${x}px ${y}px, 
@@ -85,6 +100,23 @@ function updateOverlay(e) {
             rgba(255, 200, 100, ${brightness * 0.7}) 40%,
             rgba(255, 170, 70, ${brightness * 0.4}) 60%,
             rgba(0, 0, 0, 0.95) 100%)`;
+    } else if (currentMode === "lighthouse") {
+        const time = Date.now() / 1000;
+        const angle = (time * 90) % 360; // Rotate 90 degrees per second
+        const spreadAngle = 45; // Beam spread angle
+        
+        overlay.style.background = `conic-gradient(
+            from ${angle}deg at ${x}px ${y}px,
+            rgba(0, 0, 0, 0.95) ${spreadAngle/2}deg,
+            rgba(255, 255, 200, 0.1) ${spreadAngle/2 + 2}deg,
+            rgba(255, 255, 200, 0.3) ${spreadAngle/2 + 4}deg,
+            rgba(255, 255, 200, 0.7) ${spreadAngle/2 + 6}deg,
+            rgba(255, 255, 200, 0.9) ${spreadAngle}deg,
+            rgba(255, 255, 200, 0.7) ${spreadAngle + 2}deg,
+            rgba(255, 255, 200, 0.3) ${spreadAngle + 4}deg,
+            rgba(255, 255, 200, 0.1) ${spreadAngle + 6}deg,
+            rgba(0, 0, 0, 0.95) ${spreadAngle + 8}deg
+        )`;
     }
 }
 
@@ -97,7 +129,9 @@ function injectGlobalCursorStyles(active) {
         document.head.appendChild(styleElement);
     }
 
-    const cursorImage = currentMode === "candle" ? candleCursor : flashlightCursor;
+    const cursorImage = currentMode === "candle" ? candleCursor : 
+                       currentMode === "lighthouse" ? lighthouseCursor :
+                       flashlightCursor;
 
     if (active) {
         styleElement.textContent = `
@@ -121,13 +155,12 @@ function injectGlobalCursorStyles(active) {
 // Add animation frame loop for smooth candle flicker
 let animationFrameId = null;
 
-function startFlickerAnimation() {
-    if (isActive && currentMode === "candle") {
+function startAnimation() {
+    if (isActive && (currentMode === "candle" || currentMode === "lighthouse")) {
         updateOverlay({ clientX: lastX, clientY: lastY });
-        // Reduce animation frequency to roughly 30fps
         setTimeout(() => {
-            animationFrameId = requestAnimationFrame(startFlickerAnimation);
-        }, 33); // ~30fps instead of 60fps
+            animationFrameId = requestAnimationFrame(startAnimation);
+        }, 33);
     }
 }
 
@@ -158,8 +191,8 @@ function toggleOverlay() {
     overlay.classList.toggle("active");
     injectGlobalCursorStyles(isActive);
     
-    if (isActive && currentMode === "candle") {
-        startFlickerAnimation();
+    if (isActive && (currentMode === "candle" || currentMode === "lighthouse")) {
+        startAnimation();
     } else {
         stopFlickerAnimation();
     }
@@ -175,12 +208,12 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
         const oldMode = currentMode;
         currentMode = request.mode;
         
-        if (oldMode === "candle") {
+        if (oldMode === "candle" || oldMode === "lighthouse") {
             stopFlickerAnimation();
         }
         
-        if (currentMode === "candle" && isActive) {
-            startFlickerAnimation();
+        if ((currentMode === "candle" || currentMode === "lighthouse") && isActive) {
+            startAnimation();
         }
         
         if (isActive) {
