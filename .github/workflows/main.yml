@@ -1,0 +1,27 @@
+name: Generate Release Notes
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  release-notes:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: NitzanSelwyn/release-notes-generator
+        with:
+          source_branch: dev
+          target_branch: main
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          LLM_API_URL: ${{ secrets.LLM_API_URL }}
+
+      - name: Upload release notes
+        uses: actions/upload-artifact@v3
+        with:
+          name: release-notes
+          path: release_notes.md
