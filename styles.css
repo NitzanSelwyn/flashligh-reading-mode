@@ -4,15 +4,19 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: black;
+    /* Use a radial gradient for a flashlight effect */
+    background: radial-gradient(circle at var(--flashlight-x, 50%) var(--flashlight-y, 50%), rgba(255, 255, 255, 0.15) 0%, rgba(0, 0, 0, 0.85) 60%, rgba(0, 0, 0, 0.98) 100%);
     pointer-events: none;
     z-index: 2147483647;
-    transition: opacity 0.3s ease;
+    transition: opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1), background 0.3s;
     opacity: 0;
+    backdrop-filter: blur(2px);
 }
 
 .flashlight-overlay.active {
     opacity: 1;
+    /* Optionally, you can increase blur on activation */
+    backdrop-filter: blur(4px);
 }
 
 .flashlight-overlay.active {
