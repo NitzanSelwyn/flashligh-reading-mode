@@ -13,7 +13,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - uses: NitzanSelwyn/release-notes-generator
+      - uses: NitzanSelwyn/release-notes-generator@main
         with:
           source_branch: dev
           target_branch: main
