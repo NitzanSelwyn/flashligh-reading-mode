@@ -1,0 +1,12 @@
+UV Light - A purple/blue light that could reveal "hidden" elements on the page (could make certain text colors glow)
+Strobe Light - A rapidly flashing light effect (though should come with epilepsy warning)
+Rainbow Light - A color-changing light that cycles through different hues
+Firefly - Small floating light particles that follow the cursor with a gentle glow
+5. Lantern - A warm, steady light with a slightly square/rectangular shape instead of circular
+Spotlight - A focused beam with a stronger center and softer edges, like a theater spotlight
+Plasma Ball - Electric-like tendrils that extend from the cursor point
+Ghost Light - A slightly blue-tinted light that leaves a fading trail as you move
+Oil Lamp - Similar to candle but with a more yellow/orange steady flame and wider spread
+Blacklight - Makes white/bright elements on the page glow while darkening others
+Emergency Light - A red rotating beacon effect like emergency vehicles
+Glowstick - A neon-colored light with a slight motion blur effect
