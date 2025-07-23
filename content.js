@@ -102,8 +102,8 @@ function updateOverlay(e) {
             rgba(0, 0, 0, 0.95) 100%)`;
     } else if (currentMode === "lighthouse") {
         const time = Date.now() / 1000;
-        const angle = (time * 90) % 360; // Rotate 90 degrees per second
-        const spreadAngle = 45; // Beam spread angle
+        const angle = (time * 90) % 360;
+        const spreadAngle = 45;
         
         overlay.style.background = `conic-gradient(
             from ${angle}deg at ${x}px ${y}px,
@@ -208,17 +208,22 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
         const oldMode = currentMode;
         currentMode = request.mode;
         
-        if (oldMode === "candle" || oldMode === "lighthouse") {
-            stopFlickerAnimation();
+        // Stop any existing animations
+        stopFlickerAnimation();
+        
+        // Clear the overlay background
+        if (overlay) {
+            overlay.style.background = '';
         }
         
-        if ((currentMode === "candle" || currentMode === "lighthouse") && isActive) {
-            startAnimation();
-        }
-        
+        // Start new animation if needed
         if (isActive) {
             injectGlobalCursorStyles(true);
+            if (currentMode === "candle" || currentMode === "lighthouse") {
+                startAnimation();
+            }
         }
+        
         sendResponse({ success: true, mode: currentMode });
     }
     return true;
